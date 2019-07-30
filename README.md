@@ -1,11 +1,10 @@
 # DISTRIBUTION MODELLING OF VEGETATION TYPES BASED ON AREA-FRAME SURVEY DATA #
-This repository contains R scripts to generate distribution models and predictions for Vegetation types in Norway. 
-Output data is available for download at the [DRYAD](http://example.com/ "Title") repository .
+This repository contains R scripts used to generate distribution models and prediction maps of Vegetation types in Norway. The data is acompanying article: "Distribution modelling of vegetation types based on area-frame survey data" by authors: Horvath P, Halvorsen R, Stordal F, Tallaksen LM, Tang H, Bryn A  
 
-author: Peter Horvath
-
+Spatial data is available for download at the [DRYAD](doi:10.5061/dryad.nk3b5k8) repository .
 
 
-based on tutorial by Robert J. Hijmans and Jane Elith
-utilizing functions/scripts from Julien Vollering (MIAmaxent::parsevsGLM)
-utilizing functions/scripts from Boris Leroy (virtualspecies::removeCollinearity)
+
+
+
+these scripts are based on tutorial [RSpatial](https://rspatial.org/sdm/) and adjusted by utilizing functions/scripts from Julien Vollering (MIAmaxent::parsevsGLM) and Boris Leroy (virtualspecies::removeCollinearity)

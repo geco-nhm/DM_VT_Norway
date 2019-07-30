@@ -1,9 +1,8 @@
 #### Distribution Model of Vegetation types in Norway ####
-# updated: 07.12.2017
+# updated: 30.07.2019
 # author: Peter Horvath
 # based on tutorial by Robert J. Hijmans and Jane Elith
 # utilizing scripts from Julien Vollering (MIAmaxent::parsevsGLM)
-# utilizing scripts from Boris Leroy (virtualspecies::removeCollinearity)
 
 #### 00 ####
 #### LOAD LIBRARIES #######################################
@@ -14,17 +13,14 @@ library(raster)
 library(rgdal)
 library(rgeos) # calculating distance to coast
 library(sp)
-# library(virtualspecies)
 library(MIAmaxent) # model selection and FOPs
 library(dismo) # evaluation
 library(data.table) # saving tables
-# library(markdown)
+
 
 #### RUN FUNCTIONS #########################################
 # read parsevsGLM function from file
 parsevsGLM <- dget("E:/Project_1_RUNS/new_MODEL_RUN/parsevsGLM.R")
-
-#remove collinearity
 
 #### SET PATH TO DIR ######################################
 # INPUT 
@@ -88,12 +84,12 @@ extract_pts=TRUE
 run_selection=TRUE
 # 03
 run_model=TRUE
-run_model_cluster=FALSE
-save_FOP=TRUE # this still doesn't work for categorical
+run_model_cluster=FALSE # option to run on cluster computer with multiple cores
+save_FOP=TRUE # 
 run_pred=TRUE #
 save_maps=TRUE
 # 04
-run_eval=TRUE # doesn't work with categorical (due to raster still cont.)
+run_eval=TRUE # 
 save_eval_plots=TRUE
 
 #### ENVIRONMENTAL VARIABLES #####################################
@@ -110,17 +106,13 @@ r.list.cat <- list.files(in_enviro_categorical, pattern="tif$", full.names=TRUE)
 r.stack.cat <-stack(r.list.cat)
 r.list.cat <- basename(r.list.cat)
 
-# for (l in 1:nlayers(r.stack.cat)){
-#   new.cat.stack[[l]] <- as.factor(r.stack.cat[[l]])
-# }
 r.stack <- stack(c(r.stack.cont,r.stack.cat))
 print("ENVIRONMENTAL VARIABLES loaded")
-
-# load in coastline for further use in 04 EVALUATION - calculation of distance to coast
-coastline <- readOGR(coastline_path, "Landmf_N50_coastline")
-
+# load in coastline for further use in calculation of distance to coast
+	coastline <- readOGR(coastline_path, "Landmf_N50_coastline")
+    
 #### SPECIES DATA #########################################################################################
-# change vegetation type imput data according to need
+# change vegetation type input data according to need
 # presence points
 vt_list <- list(
   "1ab","1c", "2a", "2b","2c","2d","2ef","2g",
@@ -129,12 +121,11 @@ vt_list <- list(
   "8a","8b","8cd","9ad","9bc","9e",
   "10ab","10c","11b","12b", "12c"
 )
-vt_names <- list("Moss snowbed / Sedge and grass snowbed", 	"Frozen ground, leeward", 	"Frozen ground, ridge", 	"Dry grass heath", 	"Lichen heath", 	"Mountain avens heath", 	
-                 # "Dwarf shrub heath", 	"Alpine calluna heath", 
-                 "Dwarf shrub / alpine calluna heath",
-                 "Alpine damp heath", 	"Low herb / forb meadow", 	"Lichen and heather birch forest", 	"Bilberry birch forest", 	"Meadow birch forest", 	"Alder forest", 	"Pasture land forest", 	"Poor / Rich broadleaf deciduous forest", 	"Lichen and heather pine forest", 	"Bilberry pine forest", 	"Lichen & heather spruce forest", 	"Bilberry spruce forest", 	"Meadow spruce forest", 	"Damp forest", 	"Bog forest", 	"Poor / rich swamp forest", 	"Bog / Mud-bottom fen and bog", 	"Deer-grass fen / fen", 	"Sedge marsh", 	"Coastal heath / Coastal calluna heath", 	"Damp heath", 	"Pastures", 
-                 #"Barren land",
-                 "Boulder field", 	"Exposed bedrock"
+vt_names <- list("Moss snowbed / Sedge and grass snowbed", 	"Frozen ground, leeward", 	"Frozen ground, ridge", 	"Dry grass heath", 	"Lichen heath", 	"Mountain avens heath", 	"Dwarf shrub / alpine calluna heath",	"Alpine damp heath", 	"Low herb / forb meadow",
+	"Lichen and heather birch forest", 	"Bilberry birch forest", 	"Meadow birch forest", 	"Alder forest", 	"Pasture land forest",
+	"Poor / Rich broadleaf deciduous forest", 	"Lichen and heather pine forest", 	"Bilberry pine forest", 	"Lichen & heather spruce forest", 	"Bilberry spruce forest", 	"Meadow spruce forest",
+	"Damp forest", 	"Bog forest", 	"Poor / rich swamp forest", 	"Bog / Mud-bottom fen and bog", 	"Deer-grass fen / fen", 	"Sedge marsh",
+	"Coastal heath / Coastal calluna heath", 	"Damp heath", 	"Pastures", 	"Boulder field", 	"Exposed bedrock"
 )
 # create table to output EVALUATION data into 
 nrows <- length(vt_list)
@@ -399,7 +390,7 @@ for (i in 1:length(vt_list)){
   #### MODEL EVALUATION ####
   if (run_eval==TRUE){
     print(paste("STEP 04 - MODEL EVALUATION for VT - ", VT, sep = " "))
-    # read in data if necessary
+	# read in data if necessary
     # eval_VT_pres <- readRDS(file = paste("E:/Project_1_RUNS/full_MODEL_RUN/EVAL_data/", "eval_", VT, "_p.Rds", sep = ""))
     # eval_VT_abs <- readRDS(file = paste("E:/Project_1_RUNS/full_MODEL_RUN/EVAL_data/", "eval_", VT, "_a.Rds", sep = ""))
     # mod_VT <- readRDS(file = paste("E:/Project_1_RUNS/full_MODEL_RUN/GLMmodel/", VT, "_model.Rds", sep = ""))
